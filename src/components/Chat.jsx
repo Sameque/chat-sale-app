@@ -1,9 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { io } from "socket.io-client";
 import { getUsers } from "../services/api";
 import UserList from "./UserList";
 import Message from "./Message";
-// import jwtDecode from "jwt-decode";
 import { jwtDecode } from "jwt-decode";
 
 export default function Chat({ token, username: initialUsername }) {
@@ -13,8 +12,8 @@ export default function Chat({ token, username: initialUsername }) {
   const [users, setUsers] = useState([]);
   const [receiver, setReceiver] = useState(null);
   const [username, setUsername] = useState(initialUsername);
+  const messagesEndRef = useRef(null);
 
-  // 🔑 Se username não vier, pega do token
   useEffect(() => {
     if (!initialUsername || initialUsername.trim() === "") {
       try {
@@ -29,7 +28,7 @@ export default function Chat({ token, username: initialUsername }) {
   }, [initialUsername, token]);
 
   useEffect(() => {
-    if (!username) return; // só conecta quando tiver username válido
+    if (!username) return;
 
     const newSocket = io("http://localhost:3000", {
       auth: { token },
@@ -56,6 +55,13 @@ export default function Chat({ token, username: initialUsername }) {
     loadUsers();
   }, [token]);
 
+  useEffect(() => {
+
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages]);
+
   const sendMessage = () => {
     if (text.trim() !== "" && receiver) {
       console.log(`Enviando mensagem: ${text} para ${receiver}`);
@@ -66,16 +72,7 @@ export default function Chat({ token, username: initialUsername }) {
         text,
         created_at: new Date().toISOString(),
       };
-      /*
-            const message = {
-              sender: socket.user.username,
-              receiver,
-                text,
-                created_at: timestamp //: new Date(timestamp),
-            };
 
-
-      */
       console.log("Mensagem a ser enviada:", msg);
 
       socket.emit("privateMessage", msg);
@@ -94,7 +91,7 @@ export default function Chat({ token, username: initialUsername }) {
 
         <div className="flex-1 overflow-y-auto p-4">
           {messages.map((msg, idx) => (
-            <Message key={idx} msg={msg} username={username} />
+            <Message key={idx} msg={msg} username={username} messagesEndRef={messagesEndRef} />
           ))}
         </div>
 

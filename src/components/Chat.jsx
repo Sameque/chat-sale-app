@@ -1,5 +1,4 @@
 import { useEffect, useState, useRef } from "react";
-import { io } from "socket.io-client";
 import { getUsers } from "../services/api";
 import UserList from "./UserList";
 import Message from "./Message";
@@ -15,7 +14,6 @@ const supabase = createClient(
 );
 
 export default function Chat({ token }) {
-  const [socket, setSocket] = useState(null);
   const [messages, setMessages] = useState([]);
   const [text, setText] = useState("");
   const [users, setUsers] = useState([]);
@@ -24,7 +22,7 @@ export default function Chat({ token }) {
   const [userId, setUserId] = useState("");
   const messagesEndRef = useRef(null);
 
-  //PEgando usuário e id do token
+  //Pegando usuário e id do token
   useEffect(() => {
     try {
       const decoded = jwtDecode(token);
@@ -60,7 +58,6 @@ export default function Chat({ token }) {
 
     fetchMessages();
   }, [userId, receiver]);
-  // }, [user, contact]);
 
   // Realtime subscription
   useEffect(() => {
@@ -92,11 +89,8 @@ export default function Chat({ token }) {
           // só adiciona mensagens relevantes ao chat atual
           if (
             (message.sender_id === userId &&
-              // (message.sender_id === user.id &&
-              // message.receiver_id === receiver.id) ||
               message.receiver_id === receiver.id) ||
             (message.sender_id === receiver.id &&
-              // (message.sender_id === contact.id &&
               message.receiver_id === userId)
           ) {
             setMessages((prev) => [...prev, message]);
@@ -111,36 +105,6 @@ export default function Chat({ token }) {
     // }, [token]);
   }, [userId, receiver]);
 
-  //Conexão com o socket
-  // useEffect(() => {
-  //   if (!username) return;
-
-  //   const newSocket = io("http://localhost:3000", {
-  //     auth: { token },
-  //   });
-  //   setSocket(newSocket);
-
-  //   newSocket.on("privateMessage", (msg) => {
-
-  //     console.log(`sender_id:`, msg.sender_id);
-  //     console.log(`receiver_id:`, msg.receiver_id);
-  //     console.log(`username`, username);
-  //     console.log(`receiver`, receiver.id);
-  //     console.log(`receiver`, receiver.username);
-
-  //     // console.log("Mensagem recebida:", msg);
-
-  //     if (
-  //       (msg.sender_id === userId && msg.receiver_id === receiver.id) ||
-  //       (msg.sender_id === receiver.id && msg.receiver_id === userId)
-  //     ) {
-  //       setMessages((prev) => [...prev, msg]);
-  //     }
-  //   });
-
-  //   return () => newSocket.disconnect();
-  // }, [token, receiver, username]);
-
   //Buscando usuários
   useEffect(() => {
     const loadUsers = async () => {
@@ -148,7 +112,7 @@ export default function Chat({ token }) {
       setUsers(res.data);
     };
     loadUsers();
-  }, [token]);
+  },[]);
 
   useEffect(() => {
 
@@ -173,27 +137,6 @@ export default function Chat({ token }) {
 
     setText("");
   };
-
-  // const sendMessage = () => {
-  //   // console.log(`Enviando mensagem: ${text} para`, receiver);
-
-  //   if (text.trim() !== "" && receiver) {
-
-  //     const msg = {
-  //       receiver: receiver.username,
-  //       sender: username,
-  //       senderId: userId,
-  //       receiverId: receiver.id,
-  //       content: text,
-  //       createdAt: new Date().toISOString(),
-  //     };
-
-  //     // console.log("Mensagem a ser enviada:", msg);
-
-  //     socket.emit("privateMessage", msg);
-  //     setText("");
-  //   }
-  // };
 
   return (
     <div className="flex h-screen">

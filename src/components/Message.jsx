@@ -1,5 +1,9 @@
-export default function Message({ msg, username, messagesEndRef }) {
-  const isMine = msg.sender === username;
+export default function Message({ msg, userId, messagesEndRef }) {
+  const isMine = msg.sender_id === userId;
+  console.log(`isMine:`, isMine);
+  console.log(`userId:`, userId);
+
+  console.log(`Mensagem.sender_id:`, msg.sender_id);
 
   return (
     <div className={`flex mb-2 ${isMine ? "justify-end" : "justify-start"}`}>
@@ -7,7 +11,7 @@ export default function Message({ msg, username, messagesEndRef }) {
         className={`p-2 rounded-xl max-w-xs ${isMine ? "bg-green-300" : "bg-gray-300"
           }`}
       >
-        <p className="text-sm">{msg.text}</p>
+        <p className="text-sm">{msg.content}</p>
         <span className="text-xs text-gray-600 block text-right">
           {new Date(msg.created_at || msg.createdAt).toLocaleTimeString()}
         </span>

@@ -6,10 +6,11 @@ import { createClient } from "@supabase/supabase-js";
 
 import { Menu } from "lucide-react";
 
-console.log("Supabase URL:", import.meta.env.VITE_SUPABASE_URL);
-console.log("Supabase Key:", import.meta.env.VITE_SUPABASE_KEY);
+console.log("Supabase URL:", import.meta.env.DATABASE_URL);
+console.log("Supabase Key:", import.meta.env.DATABASE_URL);
 console.log(import.meta.env);
 console.log(import.meta);
+// console.log('DATABASE_URL', process.env.DATABASE_URL)
 
 const supabase = createClient(
   import.meta.env.VITE_SUPABASE_URL,

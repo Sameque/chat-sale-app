@@ -11,10 +11,5 @@ export const register = (username, password) =>
 
 export const login = (username, password) =>
   api.post("/auth/login", { username, password });
-
-export const getUsers = async (token) =>
-  api.get("/users", {
-    headers: { Authorization: `Bearer ${token}` },
-  });
   
 export default api;

@@ -6,9 +6,6 @@ import { jwtDecode } from "jwt-decode";
 import { Menu } from "lucide-react";
 import { supabase } from "../services/supabase";
 
-console.log("Supabase URL:", import.meta.env.VITE_SUPABASE_URL);
-console.log("Supabase Key:", import.meta.env.VITE_SUPABASE_KEY);
-
 export default function Chat({ token }) {
   const [messages, setMessages] = useState([]);
   const [text, setText] = useState("");

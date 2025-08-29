@@ -8,7 +8,7 @@ export default function Login({ onLogin }) {
   const handleLogin = async () => {
     try {
       const res = await login(username, password);
-      localStorage.setItem("token", res.data.token);
+      sessionStorage.setItem("chat-app-token", res.data.token);
       onLogin(res.data.token, username);
     } catch (err) {
       alert("Erro ao logar");

@@ -1,10 +1,5 @@
 export default function Message({ msg, userId, messagesEndRef }) {
   const isMine = msg.sender_id === userId;
-  console.log(`isMine:`, isMine);
-  console.log(`userId:`, userId);
-
-  console.log(`Mensagem.sender_id:`, msg.sender_id);
-
   return (
     <div className={`flex mb-2 ${isMine ? "justify-end" : "justify-start"}`}>
       <div

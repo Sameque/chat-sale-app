@@ -3,10 +3,7 @@ import Login from "./components/Login";
 import Chat from "./components/Chat";
 
 export default function App() {
-  
-  console.log("Supabase URL:", import.meta.env.VITE_SUPABASE_URL);
-  console.log("Supabase Key:", import.meta.env.VITE_SUPABASE_KEY);
-  
+    
   const [token, setToken] = useState(sessionStorage.getItem("chat-app-token") || null);
 
   const handleLogin = (jwtToken) => {

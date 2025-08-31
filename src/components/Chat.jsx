@@ -3,11 +3,8 @@ import UserList from "./UserList";
 import Message from "./Message";
 import { jwtDecode } from "jwt-decode";
 import { createClient } from "@supabase/supabase-js";
-// import process from "process";
 import { Menu } from "lucide-react";
 
-console.log("Supabase URL:", import.meta.env.VITE_SUPABASE_URL);
-console.log("Supabase Key:", import.meta.env.VITE_SUPABASE_KEY);
 console.log(import.meta.env);
 
 const supabase = createClient(

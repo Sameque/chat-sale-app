@@ -4,13 +4,7 @@ import Message from "./Message";
 import { jwtDecode } from "jwt-decode";
 import { createClient } from "@supabase/supabase-js";
 import { Menu } from "lucide-react";
-
-console.log(import.meta.env);
-
-const supabase = createClient(
-  import.meta.env.VITE_SUPABASE_URL,
-  import.meta.env.VITE_SUPABASE_KEY
-);
+import { supabase } from '../services/supabase'
 
 export default function Chat({ token }) {
   const [messages, setMessages] = useState([]);
@@ -109,12 +103,18 @@ export default function Chat({ token }) {
     const fetchUsers = async () => {
       //TODO: filtrar usuário logado      
       const { data, error } = await supabase.from("users").select("*");
+
+      if (error) {
+        console.error("Erro ao buscar usuários:", error);
+        return;
+      }
+
       const users = data.filter((u) => u.id !== currentUser.id);
 
-      if (!error) setUsers(users);
+      setUsers(users);
     };
     fetchUsers();
-  }, [currentUser]);
+  }, []);
 
   useEffect(() => {
 

@@ -114,7 +114,7 @@ export default function Chat({ token }) {
       setUsers(users);
     };
     fetchUsers();
-  }, []);
+  }, [currentUser]);
 
   useEffect(() => {
 
